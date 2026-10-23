@@ -366,11 +366,9 @@ h2 {
 .hero-headline {
   font-size: clamp(3rem, 6.5vw, 5.8rem);
   font-weight: 800;
-  line-height: 1.02;
+  line-height: 1.05;
   letter-spacing: -0.045em;
-  background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.65) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ffffff;
   filter: drop-shadow(0 6px 30px rgba(0, 0, 0, 0.85));
   margin-bottom: 18px;
 }
@@ -1732,5 +1730,347 @@ h2 {
     width: 320px;
     height: 440px;
     padding: 24px;
+  }
+}
+
+/* ==========================================================================
+   AWWWARDS 00-100% PRELOADER & VORHANG-WIPE
+   ========================================================================== */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #050507;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  will-change: transform;
+}
+
+.preloader-counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.counter-number {
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+  background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.4) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+
+.counter-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  font-weight: 600;
+  color: var(--apple-cyan);
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.preloader-curtain {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #00f5d4 0%, #2997ff 100%);
+  transform: translateY(100%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ==========================================================================
+   SCROLL PROGRESS BAR
+   ========================================================================== */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2.5px;
+  background: linear-gradient(90deg, var(--apple-blue), var(--apple-cyan));
+  transform-origin: left center;
+  transform: scaleX(0);
+  z-index: 10000;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(0, 245, 212, 0.5);
+}
+
+/* ==========================================================================
+   CASCADE WORD REVEAL (SPLIT-TEXT MASKS)
+   ========================================================================== */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+}
+
+.word-inner {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+  color: inherit;
+}
+
+/* ==========================================================================
+   SECTION: 3D SPATIAL AUDIO KLANGFELD (THREE.JS & GLSL SHADERS)
+   ========================================================================== */
+.section-spatial-3d {
+  padding: 120px 0;
+  background: radial-gradient(ellipse at 50% 30%, rgba(0, 245, 212, 0.06), transparent 70%), var(--bg-black);
+  position: relative;
+  overflow: hidden;
+}
+
+.spatial-interactive-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  margin-top: 48px;
+}
+
+.spatial-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  background: radial-gradient(circle at center, #0b0d12 0%, #040507 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  cursor: grab;
+}
+
+.spatial-canvas-wrapper:active {
+  cursor: grabbing;
+}
+
+#spatial-webgl-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.spatial-hud-top {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.hud-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(10, 12, 16, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+}
+
+.hud-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--apple-cyan);
+  box-shadow: 0 0 10px var(--apple-cyan);
+  animation: pulse-hud 1.8s infinite ease-in-out;
+}
+
+@keyframes pulse-hud {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.hud-coords {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--apple-cyan);
+  background: rgba(10, 12, 16, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+}
+
+.spatial-hint-badge {
+  position: absolute;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: rgba(10, 12, 16, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.3s;
+}
+
+.drag-icon {
+  font-size: 1rem;
+  color: var(--apple-cyan);
+}
+
+.spatial-presets {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  background: rgba(12, 14, 18, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  z-index: 5;
+}
+
+.spatial-preset-btn {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.spatial-preset-btn:hover {
+  color: var(--text-primary);
+}
+
+.spatial-preset-btn.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--apple-cyan);
+  box-shadow: 0 0 16px rgba(0, 245, 212, 0.2);
+}
+
+.spatial-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.spatial-metric-card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 32px 28px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: border-color var(--transition-fast), transform 0.15s ease-out;
+}
+
+.spatial-metric-card:hover {
+  border-color: rgba(0, 245, 212, 0.3);
+}
+
+.spatial-metric-card .metric-num {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  font-family: var(--font-mono);
+  background: linear-gradient(135deg, var(--text-primary) 30%, var(--apple-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+
+.spatial-metric-card .metric-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.spatial-metric-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   MAGNETIC BUTTONS & SPOTLIGHT HOVER EFFECTS
+   ========================================================================== */
+.magnet-btn {
+  will-change: transform;
+}
+
+.tilt-card {
+  perspective: 1200px;
+}
+
+.spotlight-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle 350px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 245, 212, 0.12), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.tilt-card:hover .spotlight-overlay {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN FOR 3D SPATIAL SECTION
+   ========================================================================== */
+@media (max-width: 900px) {
+  .spatial-canvas-wrapper {
+    height: 400px;
+  }
+  
+  .spatial-metrics-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .spatial-presets {
+    width: calc(100% - 32px);
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  
+  .spatial-preset-btn {
+    white-space: nowrap;
   }
 }

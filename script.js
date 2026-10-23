@@ -10,13 +10,18 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
 
 document.addEventListener('DOMContentLoaded', () => {
   initLenisAndGSAP();
+  initPreloader();
+  initScrollProgressBar();
+  initTextReveal();
+  initMagneticButtons();
   initHeroParallaxAndScroll();
   initAcousticWaveform();
   initAncWipeSlider();
+  initSpatial3DWebGL();
   initStemTouchSensor();
   initCaseSimulator();
   initHorizontalScroll();
-  initReactBitsInteractions();
+  init3DTiltAndSpotlight();
   initBuyButton();
 });
 
@@ -87,6 +92,49 @@ function playCaseChime(isOpen) {
     osc1.stop(ctx.currentTime + 0.08);
     osc2.start(ctx.currentTime + 0.05);
     osc2.stop(ctx.currentTime + 0.22);
+  } catch (e) {}
+}
+
+// Gentle tactile micro-hover tick
+function playHoverTick() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(850, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + 0.02);
+    gain.gain.setValueAtTime(0.015, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.02);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.02);
+  } catch (e) {}
+}
+
+// Gentle spatial 3D frequency sweep when dragging 3D soundfield
+let lastFreqTime = 0;
+function playSpatialFrequency(azimuth, elevation) {
+  try {
+    const now = performance.now();
+    if (now - lastFreqTime < 60) return; // Throttle
+    lastFreqTime = now;
+
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const freq = Math.max(240, Math.min(840, 480 + (azimuth % 180) * 1.5 + elevation * 2));
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(0.012, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.04);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.04);
   } catch (e) {}
 }
 
@@ -551,12 +599,161 @@ function initHorizontalScroll() {
 }
 
 /* ==========================================================================
-   8. REACT BITS PATTERNS (3D TILT, SPOTLIGHT & MAGNET BUTTONS)
+   8. AWWWARDS PRELOADER & VORHANG-WIPE
    ========================================================================== */
-function initReactBitsInteractions() {
-  const tiltCards = document.querySelectorAll('.tilt-card');
+function initPreloader() {
+  const counterEl = document.querySelector('.counter-number');
+  const preloader = document.getElementById('preloader');
+  const curtain = document.querySelector('.preloader-curtain');
+  if (!counterEl || !preloader) return;
 
-  tiltCards.forEach((card) => {
+  const counter = { val: 0 };
+  gsap.to(counter, {
+    val: 100,
+    duration: 1.4,
+    ease: 'power2.inOut',
+    onUpdate: () => {
+      const formatted = Math.floor(counter.val).toString().padStart(2, '0');
+      counterEl.innerText = formatted;
+    },
+    onComplete: () => {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          preloader.style.display = 'none';
+        }
+      });
+
+      tl.to(curtain, {
+        y: '0%',
+        duration: 0.45,
+        ease: 'power3.in'
+      })
+      .to(preloader, {
+        y: '-100%',
+        duration: 0.65,
+        ease: 'power4.inOut'
+      })
+      .from('.hero-headline .word-inner', {
+        y: 60,
+        opacity: 0,
+        filter: 'blur(10px)',
+        duration: 0.9,
+        stagger: 0.05,
+        ease: 'power3.out'
+      }, '-=0.25')
+      .from('#hero-pod-card', {
+        scale: 0.88,
+        opacity: 0,
+        duration: 1.0,
+        ease: 'power3.out'
+      }, '<');
+    }
+  });
+}
+
+/* ==========================================================================
+   9. SCROLL PROGRESS INDICATOR
+   ========================================================================== */
+function initScrollProgressBar() {
+  const bar = document.getElementById('scroll-progress');
+  if (!bar) return;
+
+  ScrollTrigger.create({
+    start: 'top top',
+    end: 'max',
+    onUpdate: (self) => {
+      bar.style.transform = `scaleX(${self.progress})`;
+    }
+  });
+}
+
+/* ==========================================================================
+   10. SPLIT-TEXT CASCADE WORD REVEALS (PRESERVES BR & CLEAN KERNING)
+   ========================================================================== */
+function initTextReveal(selector = '.reveal-headline') {
+  const elements = document.querySelectorAll(selector);
+  elements.forEach((el) => {
+    if (el.querySelector('.word-mask')) return;
+    const rawHtml = el.innerHTML;
+    const lines = rawHtml.split(/<br\s*[\/]?>/i);
+
+    el.innerHTML = lines.map(line => {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = line;
+      const text = tempDiv.innerText.trim();
+      const words = text.split(/\s+/).filter(Boolean);
+      return words.map(w => `<span class="word-mask"><span class="word-inner">${w}&nbsp;</span></span>`).join('');
+    }).join('<br>');
+
+    const inners = el.querySelectorAll('.word-inner');
+    if (el.classList.contains('hero-headline')) return;
+
+    gsap.from(inners, {
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 88%',
+        toggleActions: 'play none none none'
+      },
+      y: 35,
+      opacity: 0,
+      filter: 'blur(8px)',
+      duration: 0.8,
+      stagger: 0.04,
+      ease: 'power3.out'
+    });
+  });
+}
+
+/* ==========================================================================
+   11. MAGNETIC CURSOR PULL (TACTILE MICRO-INTERACTION)
+   ========================================================================== */
+function initMagneticButtons(selector = '.magnet-btn') {
+  const buttons = document.querySelectorAll(selector);
+  buttons.forEach((btn) => {
+    let bound = null;
+
+    btn.addEventListener('mouseenter', () => {
+      bound = btn.getBoundingClientRect();
+      playHoverTick();
+    });
+
+    btn.addEventListener('mousemove', (e) => {
+      if (!bound) bound = btn.getBoundingClientRect();
+      const x = e.clientX - (bound.left + bound.width / 2);
+      const y = e.clientY - (bound.top + bound.height / 2);
+
+      gsap.to(btn, {
+        x: x * 0.35,
+        y: y * 0.35,
+        duration: 0.3,
+        ease: 'power2.out',
+        overwrite: 'auto'
+      });
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      gsap.to(btn, {
+        x: 0,
+        y: 0,
+        duration: 0.7,
+        ease: 'elastic.out(1.2, 0.4)',
+        overwrite: 'auto'
+      });
+      bound = null;
+    });
+  });
+}
+
+/* ==========================================================================
+   12. 3D TILT PERSPECTIVE CARDS WITH CURSOR SPOTLIGHT
+   ========================================================================== */
+function init3DTiltAndSpotlight(selector = '[data-tilt], .tilt-card') {
+  const cards = document.querySelectorAll(selector);
+  cards.forEach((card) => {
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform 0.1s ease-out';
+    });
+
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -565,48 +762,308 @@ function initReactBitsInteractions() {
       card.style.setProperty('--mouse-x', `${x}px`);
       card.style.setProperty('--mouse-y', `${y}px`);
 
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -6;
-      const rotateY = ((x - centerX) / centerX) * 6;
+      const rotateX = ((y / rect.height) - 0.5) * -14;
+      const rotateY = ((x / rect.width) - 0.5) * 14;
 
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
     });
 
     card.addEventListener('mouseleave', () => {
       card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-    });
-  });
-
-  const magnetBtns = document.querySelectorAll('.magnet-btn');
-
-  magnetBtns.forEach((btn) => {
-    btn.addEventListener('mousemove', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - (rect.left + rect.width / 2);
-      const y = e.clientY - (rect.top + rect.height / 2);
-
-      gsap.to(btn, {
-        x: x * 0.32,
-        y: y * 0.32,
-        duration: 0.3,
-        ease: 'power2.out'
-      });
-    });
-
-    btn.addEventListener('mouseleave', () => {
-      gsap.to(btn, {
-        x: 0,
-        y: 0,
-        duration: 0.6,
-        ease: 'elastic.out(1, 0.4)'
-      });
+      card.style.transition = 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
     });
   });
 }
 
 /* ==========================================================================
-   9. INTERACTIVE BUY ACTION
+   13. INTERACTIVE 3D SPATIAL AUDIO KLANGFELD (THREE.JS & GLSL SHADERS)
+   ========================================================================== */
+function initSpatial3DWebGL() {
+  const container = document.getElementById('spatial-canvas-wrapper');
+  const canvas = document.getElementById('spatial-webgl-canvas');
+  const coordsEl = document.getElementById('spatial-coords');
+  if (!container || !canvas || typeof THREE === 'undefined') return;
+
+  // Scene & Camera
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+  camera.position.z = 4.8;
+
+  // Renderer with retina pixel ratio clamp (60 FPS hygiene)
+  const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    antialias: true,
+    alpha: true,
+    powerPreference: 'high-performance'
+  });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Custom GLSL Simplex Noise Vertex & Fragment Shader
+  const vertexShader = `
+    uniform float uTime;
+    uniform float uDistortion;
+    uniform float uSpeed;
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying float vNoise;
+
+    vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+    vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+    vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+    vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+    float snoise(vec3 v) {
+      const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+      const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+      vec3 i  = floor(v + dot(v, C.yyy));
+      vec3 x0 = v - i + dot(i, C.xxx);
+      vec3 g = step(x0.yzx, x0.xyz);
+      vec3 l = 1.0 - g;
+      vec3 i1 = min(g.xyz, l.zxy);
+      vec3 i2 = max(g.xyz, l.zxy);
+      vec3 x1 = x0 - i1 + C.xxx;
+      vec3 x2 = x0 - i2 + C.yyy;
+      vec3 x3 = x0 - D.yyy;
+      i = mod289(i);
+      vec4 p = permute(permute(permute(
+                 i.z + vec4(0.0, i1.z, i2.z, 1.0))
+               + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+               + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+      vec4 j = p - 49.0 * floor(p * (1.0 / 49.0));
+      vec4 x_ = floor(j * (1.0 / 7.0));
+      vec4 y_ = floor(j - 7.0 * x_);
+      vec4 x = x_ * (2.0 / 7.0) + 0.5 / 7.0 - 1.0;
+      vec4 y = y_ * (2.0 / 7.0) + 0.5 / 7.0 - 1.0;
+      vec4 h = 1.0 - abs(x) - abs(y);
+      vec4 b0 = vec4(x.xy, y.xy);
+      vec4 b1 = vec4(x.zw, y.zw);
+      vec4 s0 = floor(b0)*2.0 + 1.0;
+      vec4 s1 = floor(b1)*2.0 + 1.0;
+      vec4 sh = -step(h, vec4(0.0));
+      vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+      vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+      vec3 p0 = vec3(a0.xy, h.x);
+      vec3 p1 = vec3(a0.zw, h.y);
+      vec3 p2 = vec3(a1.xy, h.z);
+      vec3 p3 = vec3(a1.zw, h.w);
+      vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+      p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+      vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+      m = m * m;
+      return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+    }
+
+    void main() {
+      vUv = uv;
+      vNormal = normal;
+      float noise = snoise(position * uDistortion + vec3(uTime * uSpeed));
+      vNoise = noise;
+      vec3 newPosition = position + normal * (noise * 0.28);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+    }
+  `;
+
+  const fragmentShader = `
+    uniform vec3 uColorA;
+    uniform vec3 uColorB;
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying float vNoise;
+
+    void main() {
+      vec3 viewDir = vec3(0.0, 0.0, 1.0);
+      float fresnel = pow(1.0 - abs(dot(vNormal, viewDir)), 2.8);
+      vec3 baseColor = mix(uColorA, uColorB, vNoise * 0.5 + 0.5);
+      vec3 finalColor = mix(baseColor, vec3(0.9, 1.0, 0.98), fresnel * 0.85);
+      gl_FragColor = vec4(finalColor, 0.92);
+    }
+  `;
+
+  const shaderMaterial = new THREE.ShaderMaterial({
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader,
+    uniforms: {
+      uTime: { value: 0 },
+      uDistortion: { value: 1.4 },
+      uSpeed: { value: 0.35 },
+      uColorA: { value: new THREE.Color(0x0a0c10) },
+      uColorB: { value: new THREE.Color(0x00f5d4) }
+    },
+    transparent: true,
+    wireframe: false
+  });
+
+  // Groups
+  const outerGroup = new THREE.Group();
+  const innerGroup = new THREE.Group();
+  scene.add(outerGroup);
+  outerGroup.add(innerGroup);
+
+  // Acoustic Orb Geometry
+  const geometry = new THREE.IcosahedronGeometry(1.4, 64);
+  const soundOrb = new THREE.Mesh(geometry, shaderMaterial);
+  innerGroup.add(soundOrb);
+
+  // Holographic Wireframe Accent Shell
+  const wireMaterial = new THREE.MeshBasicMaterial({
+    color: 0x2997ff,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.12
+  });
+  const wireMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(1.48, 16), wireMaterial);
+  innerGroup.add(wireMesh);
+
+  // Orbiting Sound Particles
+  const particleCount = 450;
+  const particleGeo = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(Math.random() * 2 - 1);
+    const radius = 1.8 + Math.random() * 0.8;
+    positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+    positions[i * 3 + 2] = radius * Math.cos(phi);
+  }
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const particleMat = new THREE.PointsMaterial({
+    color: 0x00f5d4,
+    size: 0.028,
+    transparent: true,
+    opacity: 0.55
+  });
+  const particles = new THREE.Points(particleGeo, particleMat);
+  innerGroup.add(particles);
+
+  // Interactive 360 Drag & Head-Tracking
+  let isDragging = false;
+  let prevMouse = { x: 0, y: 0 };
+  let targetRotation = { x: 0, y: 0 };
+  let currentRotation = { x: 0, y: 0 };
+
+  container.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    prevMouse.x = e.clientX;
+    prevMouse.y = e.clientY;
+    container.setPointerCapture(e.pointerId);
+  });
+
+  container.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - prevMouse.x;
+    const deltaY = e.clientY - prevMouse.y;
+    prevMouse.x = e.clientX;
+    prevMouse.y = e.clientY;
+
+    targetRotation.y += deltaX * 0.008;
+    targetRotation.x += deltaY * 0.008;
+    targetRotation.x = Math.max(-Math.PI * 0.45, Math.min(Math.PI * 0.45, targetRotation.x));
+
+    const degY = (targetRotation.y * (180 / Math.PI)) % 360;
+    const degX = targetRotation.x * (180 / Math.PI);
+    if (coordsEl) {
+      coordsEl.innerText = `AZIMUT: ${degY >= 0 ? '+' : ''}${degY.toFixed(1)}° · ELEVATION: ${degX >= 0 ? '+' : ''}${degX.toFixed(1)}°`;
+    }
+    playSpatialFrequency(degY, degX);
+  });
+
+  const stopDrag = (e) => {
+    if (isDragging) {
+      isDragging = false;
+      try { container.releasePointerCapture(e.pointerId); } catch (err) {}
+    }
+  };
+  container.addEventListener('pointerup', stopDrag);
+  container.addEventListener('pointercancel', stopDrag);
+
+  // Preset Buttons Reactivity
+  const presetBtns = container.querySelectorAll('.spatial-preset-btn');
+  presetBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      presetBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const preset = btn.dataset.preset;
+
+      if (preset === 'spatial') {
+        gsap.to(shaderMaterial.uniforms.uDistortion, { value: 1.4, duration: 0.8 });
+        gsap.to(shaderMaterial.uniforms.uSpeed, { value: 0.35, duration: 0.8 });
+        shaderMaterial.uniforms.uColorB.value.setHex(0x00f5d4);
+        wireMaterial.color.setHex(0x2997ff);
+        particleMat.color.setHex(0x00f5d4);
+      } else if (preset === 'anc') {
+        gsap.to(shaderMaterial.uniforms.uDistortion, { value: 0.3, duration: 0.8 });
+        gsap.to(shaderMaterial.uniforms.uSpeed, { value: 0.1, duration: 0.8 });
+        shaderMaterial.uniforms.uColorB.value.setHex(0x2997ff);
+        wireMaterial.color.setHex(0x00f5d4);
+        particleMat.color.setHex(0x2997ff);
+      } else if (preset === 'transparency') {
+        gsap.to(shaderMaterial.uniforms.uDistortion, { value: 2.2, duration: 0.8 });
+        gsap.to(shaderMaterial.uniforms.uSpeed, { value: 0.65, duration: 0.8 });
+        shaderMaterial.uniforms.uColorB.value.setHex(0x30d158);
+        wireMaterial.color.setHex(0x30d158);
+        particleMat.color.setHex(0x30d158);
+      }
+      playHoverTick();
+    });
+  });
+
+  // Performance Hygiene: IntersectionObserver (Pauses loop when offscreen)
+  let isVisible = true;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      isVisible = entry.isIntersecting;
+    });
+  }, { threshold: 0.1 });
+  observer.observe(container);
+
+  // Render Loop
+  let lastTime = performance.now();
+  function animate() {
+    requestAnimationFrame(animate);
+    if (!isVisible) return;
+
+    const now = performance.now();
+    const delta = (now - lastTime) * 0.001;
+    lastTime = now;
+
+    shaderMaterial.uniforms.uTime.value += delta;
+
+    // Smooth rotation interpolation (lerp)
+    currentRotation.x += (targetRotation.x - currentRotation.x) * 0.1;
+    currentRotation.y += (targetRotation.y - currentRotation.y) * 0.1;
+    outerGroup.rotation.x = currentRotation.x;
+    outerGroup.rotation.y = currentRotation.y;
+
+    // Organic idle drift
+    if (!isDragging) {
+      targetRotation.y += delta * 0.18;
+      const degY = (targetRotation.y * (180 / Math.PI)) % 360;
+      const degX = targetRotation.x * (180 / Math.PI);
+      if (coordsEl) {
+        coordsEl.innerText = `AZIMUT: ${degY >= 0 ? '+' : ''}${degY.toFixed(1)}° · ELEVATION: ${degX >= 0 ? '+' : ''}${degX.toFixed(1)}°`;
+      }
+    }
+
+    particles.rotation.y += delta * 0.06;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Responsive Resizing
+  window.addEventListener('resize', () => {
+    if (!container || !renderer || !camera) return;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  });
+}
+
+/* ==========================================================================
+   14. INTERACTIVE BUY ACTION
    ========================================================================== */
 function initBuyButton() {
   const buyBtn = document.getElementById('btn-buy-now');

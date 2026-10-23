@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AirPods Pro (2. Generation) · Apple (AT)</title>
   <meta name="description" content="AirPods Pro mit H2 Chip. Bis zu 2x bessere Aktive Geräuschunterdrückung, Transparenzmodus und Personalisiertes 3D Audio.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
   
   <!-- Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,12 +15,27 @@
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 
+  <!-- Three.js (WebGL 3D & GLSL Shaders) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <!-- GSAP & Lenis CDN -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
+  <!-- AWWWARDS 00-100% LUXUS-PRELOADER MIT VORHANG-WIPE -->
+  <div id="preloader" class="preloader">
+    <div class="preloader-counter">
+      <span class="counter-number">00</span>
+      <span class="counter-label">INITIALISIERE H2 ARCHITEKTUR</span>
+    </div>
+    <div class="preloader-curtain"></div>
+  </div>
+
+  <!-- AWWWARDS SCROLL-PROGRESS INDICATOR -->
+  <div class="scroll-progress-bar" id="scroll-progress"></div>
+
   <!-- Apple Top Subnav -->
   <header class="apple-nav">
     <div class="nav-inner">
@@ -33,6 +49,7 @@
       <div class="nav-actions">
         <a href="#overview" class="nav-link active">Überblick</a>
         <a href="#acoustics" class="nav-link">Klang & ANC</a>
+        <a href="#spatial-3d" class="nav-link">3D Audio</a>
         <a href="#touch" class="nav-link">Touch-Steuerung</a>
         <a href="#case-sim" class="nav-link">MagSafe Case</a>
         <a href="#innovations" class="nav-link">Innovationen</a>
@@ -64,7 +81,7 @@
         <!-- Primary Hero Stage Text -->
         <div class="hero-text-overlay" id="hero-stage-1">
           <span class="eyebrow-apple">Neu gedacht von innen nach außen</span>
-          <h1 class="hero-headline">Magie wie nie gehört.</h1>
+          <h1 class="hero-headline reveal-headline">Magie wie nie gehört.</h1>
           <p class="hero-subline">Mit dem von Apple entwickelten <strong>H2 Chip</strong>, bis zu 2x mehr aktiver Geräuschunterdrückung, adaptivem Audio und 30 Stunden Batterielaufzeit.</p>
           <div class="hero-badge-row">
             <span class="spec-pill">H2 Apple Silicon</span>
@@ -77,7 +94,7 @@
         <!-- Secondary Hero Stage: Akustische Innenarchitektur (Kein schwarzes Loch beim Scrollen!) -->
         <div class="hero-second-stage" id="hero-stage-2">
           <div class="stage2-badge">AKUSTISCHE ARCHITEKTUR</div>
-          <h2 class="stage2-headline">Höchste Präzision.<br>Kompakt wie nie.</h2>
+          <h2 class="stage2-headline reveal-headline">Höchste Präzision.<br>Kompakt wie nie.</h2>
           <p class="stage2-sub">Spezieller Apple High-Excursion Tieftöner und Verstärker mit hohem Dynamikbereich für kristallklare Höhen und tiefste Bässe.</p>
           
           <div class="stage2-visual-box">
@@ -116,7 +133,7 @@
       <div class="content-container">
         <div class="section-header">
           <span class="tag-accent">Intelligente Klangkontrolle</span>
-          <h2>Hör nur das,<br>was du willst.</h2>
+          <h2 class="reveal-headline">Hör nur das,<br>was du willst.</h2>
           <p class="section-desc">Der H2 Chip nutzt rechnergestütztes Audio, um Umgebungslärm 48.000 Mal pro Sekunde auszulöschen. Schalte zwischen den Modi um und beobachte die Frequenz-Wellen live.</p>
         </div>
 
@@ -131,17 +148,17 @@
           </div>
 
           <div class="anc-switcher-controls" role="tablist">
-            <button class="mode-btn active" data-mode="anc" role="tab" aria-selected="true">
+            <button class="mode-btn active magnet-btn" data-mode="anc" role="tab" aria-selected="true">
               <span class="btn-icon">🔇</span>
               <span class="btn-title">Aktive Geräusch­unterdrückung</span>
               <span class="btn-desc">Bis zu 2x mehr Lärmauslöschung</span>
             </button>
-            <button class="mode-btn" data-mode="transparency" role="tab" aria-selected="false">
+            <button class="mode-btn magnet-btn" data-mode="transparency" role="tab" aria-selected="false">
               <span class="btn-icon">👂</span>
               <span class="btn-title">Transparenz­modus</span>
               <span class="btn-desc">Natürliche Umgebungs­geräusche</span>
             </button>
-            <button class="mode-btn" data-mode="adaptive" role="tab" aria-selected="false">
+            <button class="mode-btn magnet-btn" data-mode="adaptive" role="tab" aria-selected="false">
               <span class="btn-icon">✨</span>
               <span class="btn-title">Adaptives Audio</span>
               <span class="btn-desc">Mischt ANC dynamisch nach Situation</span>
@@ -200,13 +217,76 @@
       </div>
     </section>
 
-    <!-- 3. INTERAKTIVE TOUCH-STEUERUNG (WISCHEN ZUM LAUTER/LEISER) -->
+    <!-- 3. NEU: INTERAKTIVES 3D SPATIAL AUDIO KLANGFELD (THREE.JS & GLSL SHADERS) -->
+    <section class="section-spatial-3d" id="spatial-3d">
+      <div class="content-container">
+        <div class="section-header center">
+          <span class="tag-accent">Personalisiertes 3D Audio</span>
+          <h2 class="reveal-headline">Klang in jeder Dimension.</h2>
+          <p class="section-desc">Der Apple H2 Chip kartiert dein Gehör und platziert Töne millimetergenau im dreidimensionalen Raum. Drehe das interaktive 3D-Klangfeld mit der Maus um 360° und erlebe dynamisches Head-Tracking in Echtzeit.</p>
+        </div>
+
+        <div class="spatial-interactive-stage">
+          <!-- 3D Three.js WebGL Canvas Stage -->
+          <div class="spatial-canvas-wrapper" id="spatial-canvas-wrapper">
+            <canvas id="spatial-webgl-canvas"></canvas>
+            
+            <!-- Live Holographic HUD Overlay -->
+            <div class="spatial-hud-top">
+              <span class="hud-pill"><span class="hud-live-dot"></span> 3D H2 SOUNDFIELD ORB</span>
+              <span class="hud-coords" id="spatial-coords">AZIMUT: +0.0° · ELEVATION: +0.0°</span>
+            </div>
+
+            <div class="spatial-hint-badge">
+              <span class="drag-icon">⤾</span> Ziehe mit der Maus für 360° Surround-Ortung
+            </div>
+
+            <!-- Spatial Audio Mode Preset Controls -->
+            <div class="spatial-presets" role="group" aria-label="3D Audio Preset wählen">
+              <button class="spatial-preset-btn active magnet-btn" data-preset="spatial">
+                <span>✦</span> 3D Audio (Kino-Raum)
+              </button>
+              <button class="spatial-preset-btn magnet-btn" data-preset="anc">
+                <span>🔇</span> Reines ANC Vakuum
+              </button>
+              <button class="spatial-preset-btn magnet-btn" data-preset="transparency">
+                <span>👂</span> Transparenz Resonanz
+              </button>
+            </div>
+          </div>
+
+          <!-- Feature Cards Grid with 3D Tilt & Cursor Spotlight -->
+          <div class="spatial-metrics-row">
+            <div class="spatial-metric-card tilt-card" data-tilt>
+              <div class="spotlight-overlay"></div>
+              <div class="metric-num">360°</div>
+              <div class="metric-title">Dynamisches Head-Tracking</div>
+              <p>Integrierte Gyroskope und Beschleunigungsmesser verfolgen die Kopfbewegung und halten den Klang fest im Raum verankert.</p>
+            </div>
+            <div class="spatial-metric-card tilt-card" data-tilt>
+              <div class="spotlight-overlay"></div>
+              <div class="metric-num">48 kHz</div>
+              <div class="metric-title">Rechnergestützte Akustik</div>
+              <p>Der H2 Chip moduliert Phasenverschiebungen in Echtzeit für naturgetreue binaurale Ortung wie im echten Konzertsaal.</p>
+            </div>
+            <div class="spatial-metric-card tilt-card" data-tilt>
+              <div class="spotlight-overlay"></div>
+              <div class="metric-num">TrueDepth</div>
+              <div class="metric-title">Individuelles Ohrprofil</div>
+              <p>Deine iPhone-Kamera scannt die Geometrie deiner Ohrmuscheln für eine maßgeschneiderte Frequenzabstimmung.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. INTERAKTIVE TOUCH-STEUERUNG (WISCHEN ZUM LAUTER/LEISER) -->
     <section class="section-touch" id="touch">
       <div class="content-container">
         <div class="touch-split">
           <div class="touch-copy">
             <span class="tag-accent">Sensor am Schaft</span>
-            <h2>Wischen genügt.<br>Volle Kontrolle.</h2>
+            <h2 class="reveal-headline">Wischen genügt.<br>Volle Kontrolle.</h2>
             <p>Mit der Touch-Steuerung am unteren Schaft passt du die Lautstärke mit einer einfachen Wischbewegung nach oben oder unten an. Ein Druck pausiert, wechselt Tracks oder schaltet den ANC-Modus um.</p>
             
             <div class="touch-instructions">
@@ -268,7 +348,7 @@
       <div class="content-container">
         <div class="section-header center">
           <span class="tag-accent">Haptische Interaktion</span>
-          <h2>Das MagSafe Ladecase.</h2>
+          <h2 class="reveal-headline">Das MagSafe Ladecase.</h2>
           <p class="section-desc">Klicke auf das Case oder drücke den Button, um es interaktiv auf- und zuzuklappen.</p>
         </div>
 
@@ -309,7 +389,7 @@
       <div class="horizontal-sticky-wrapper">
         <div class="horizontal-header">
           <span class="tag-accent">Meilensteine der Akustik</span>
-          <h2>Wische durch die Innovationen.</h2>
+          <h2 class="reveal-headline">Wische durch die Innovationen.</h2>
           <p>Scrolle nach unten, um horizontal durch alle bahnbrechenden Komponenten zu gleiten.</p>
         </div>
 
@@ -406,7 +486,7 @@
       <div class="content-container">
         <div class="section-header center">
           <span class="tag-accent">Im kleinsten Detail</span>
-          <h2>Technische Daten</h2>
+          <h2 class="reveal-headline">Technische Daten</h2>
           <p class="section-desc">Jedes Bauteil wurde für kompromisslose akustische Wiedergabetreue optimiert.</p>
         </div>
 
@@ -467,7 +547,7 @@
             <img src="assets/open_case.png" alt="AirPods Pro mit MagSafe Case" class="buy-product-img">
           </div>
           <div class="buy-badge">Kostenlose Lieferung & Gravur</div>
-          <h2>AirPods Pro</h2>
+          <h2 class="reveal-headline">AirPods Pro</h2>
           <p class="buy-sub">2. Generation mit MagSafe Ladecase (USB-C)</p>
           
           <div class="price-tag">
