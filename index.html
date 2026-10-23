@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="de" class="lenis">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AirPods Pro (2. Generation) · Apple (AT)</title>
+  <meta name="description" content="AirPods Pro mit H2 Chip. Bis zu 2x bessere Aktive Geräuschunterdrückung, Transparenzmodus und Personalisiertes 3D Audio.">
+  
+  <!-- Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- GSAP & Lenis CDN -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+  <!-- Apple Top Subnav -->
+  <header class="apple-nav">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <svg class="apple-logo" viewBox="0 0 170 170" width="16" height="16" fill="currentColor">
+          <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.69-7.85-11.96-14.43-5.74-8.83-10.15-18.77-13.23-29.83-3.08-11.06-4.62-21.73-4.62-32 0-14.49 3.59-26.47 10.77-35.94 7.18-9.48 16.3-14.28 27.36-14.41 5.39 0 11.27 1.43 17.65 4.3 6.38 2.87 10.51 4.35 12.39 4.44 1.5.09 5.8-1.44 12.91-4.59 7.11-3.15 13.06-4.56 17.85-4.23 13.62.91 24.36 6.13 32.22 15.66-12.02 7.28-17.9 17.4-17.65 30.36.25 10.11 4.14 18.66 11.67 25.65 7.53 7 16.48 10.83 26.85 11.49-2.3 6.78-5.11 13.65-8.45 20.62zM119.22 31.9c0-7.39 2.71-14.44 8.13-21.15 5.42-6.72 12.18-10.75 20.28-12.1 0 1.28.06 2.45.06 3.51-.06 7.28-2.89 14.38-8.49 21.3-5.6 6.92-12.59 10.9-20.98 11.94-.38-1.16-1-2.33-1-3.5z"/>
+        </svg>
+        <span class="product-title">AirPods Pro</span>
+        <span class="gen-badge">2. Generation</span>
+      </div>
+      <div class="nav-actions">
+        <a href="#overview" class="nav-link active">Überblick</a>
+        <a href="#acoustics" class="nav-link">Klang & ANC</a>
+        <a href="#touch" class="nav-link">Touch-Steuerung</a>
+        <a href="#case-sim" class="nav-link">MagSafe Case</a>
+        <a href="#innovations" class="nav-link">Innovationen</a>
+        <a href="#specs" class="nav-link">Tech Specs</a>
+        <a href="#buy" class="nav-cta magnet-btn">Kaufen</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. HIGH-END HERO STAGE MIT ECHTEM 3D-PARALLAX AIRPOD & STAGE 2 ARCHITEKTUR -->
+    <section class="hero-pinned-wrapper" id="overview">
+      <div class="hero-sticky">
+        
+        <!-- Interactive High-Res AirPods Centerpiece -->
+        <div class="hero-product-stage" id="hero-product-stage">
+          <!-- Animated Acoustic Sound Waves -->
+          <div class="sound-wave-ring wave-1"></div>
+          <div class="sound-wave-ring wave-2"></div>
+          <div class="sound-wave-ring wave-3"></div>
+          
+          <!-- 3D Tilting Product Card -->
+          <div class="hero-pod-card" id="hero-pod-card">
+            <img src="assets/both_pods.png" alt="Apple AirPods Pro 2" class="hero-pod-img" id="hero-pod-img">
+            <div class="hero-specular-light" id="hero-light"></div>
+          </div>
+        </div>
+
+        <!-- Primary Hero Stage Text -->
+        <div class="hero-text-overlay" id="hero-stage-1">
+          <span class="eyebrow-apple">Neu gedacht von innen nach außen</span>
+          <h1 class="hero-headline">Magie wie nie gehört.</h1>
+          <p class="hero-subline">Mit dem von Apple entwickelten <strong>H2 Chip</strong>, bis zu 2x mehr aktiver Geräuschunterdrückung, adaptivem Audio und 30 Stunden Batterielaufzeit.</p>
+          <div class="hero-badge-row">
+            <span class="spec-pill">H2 Apple Silicon</span>
+            <span class="spec-pill">2x Aktive Geräuschunterdrückung</span>
+            <span class="spec-pill">Personalisiertes 3D Audio</span>
+            <span class="spec-pill">MagSafe Case (USB-C)</span>
+          </div>
+        </div>
+
+        <!-- Secondary Hero Stage: Akustische Innenarchitektur (Kein schwarzes Loch beim Scrollen!) -->
+        <div class="hero-second-stage" id="hero-stage-2">
+          <div class="stage2-badge">AKUSTISCHE ARCHITEKTUR</div>
+          <h2 class="stage2-headline">Höchste Präzision.<br>Kompakt wie nie.</h2>
+          <p class="stage2-sub">Spezieller Apple High-Excursion Tieftöner und Verstärker mit hohem Dynamikbereich für kristallklare Höhen und tiefste Bässe.</p>
+          
+          <div class="stage2-visual-box">
+            <div class="stage2-img-wrap">
+              <img src="assets/audio_guts.png" alt="AirPods Pro 2 Akustische Innenarchitektur" class="stage2-img" id="hero-guts-img">
+            </div>
+            
+            <!-- Interactive Floating Architecture Tags -->
+            <div class="guts-callout callout-chip">
+              <span class="callout-dot"></span>
+              <strong>Apple H2 Chip</strong>
+              <span>48.000 Berechnungen / Sek.</span>
+            </div>
+            <div class="guts-callout callout-driver">
+              <span class="callout-dot"></span>
+              <strong>High-Excursion Treiber</strong>
+              <span>Verzerrungsfreie Bässe</span>
+            </div>
+            <div class="guts-callout callout-vent">
+              <span class="callout-dot"></span>
+              <strong>Belüftungssystem</strong>
+              <span>Aktiver Druckausgleich</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-indicator" id="hero-scroll-indicator">
+          <span>Scrolle zum Erkunden</span>
+          <div class="scroll-mouse-icon"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. INTERAKTIVER ANC & TRANSPARENZMODUS KLANG-SIMULATOR + INTERAKTIVER WIPE-SLIDER -->
+    <section class="section-acoustic" id="acoustics">
+      <div class="content-container">
+        <div class="section-header">
+          <span class="tag-accent">Intelligente Klangkontrolle</span>
+          <h2>Hör nur das,<br>was du willst.</h2>
+          <p class="section-desc">Der H2 Chip nutzt rechnergestütztes Audio, um Umgebungslärm 48.000 Mal pro Sekunde auszulöschen. Schalte zwischen den Modi um und beobachte die Frequenz-Wellen live.</p>
+        </div>
+
+        <!-- Live Waveform & Mode Switcher -->
+        <div class="anc-interactive-stage">
+          <div class="anc-canvas-wrapper">
+            <canvas id="soundwave-canvas" width="1200" height="360"></canvas>
+            <div class="anc-status-hud">
+              <span class="hud-dot"></span>
+              <span id="anc-status-text">ANC AKTIV · -42 dB Rauschdämpfung (99.2% Lärmauslöschung)</span>
+            </div>
+          </div>
+
+          <div class="anc-switcher-controls" role="tablist">
+            <button class="mode-btn active" data-mode="anc" role="tab" aria-selected="true">
+              <span class="btn-icon">🔇</span>
+              <span class="btn-title">Aktive Geräusch­unterdrückung</span>
+              <span class="btn-desc">Bis zu 2x mehr Lärmauslöschung</span>
+            </button>
+            <button class="mode-btn" data-mode="transparency" role="tab" aria-selected="false">
+              <span class="btn-icon">👂</span>
+              <span class="btn-title">Transparenz­modus</span>
+              <span class="btn-desc">Natürliche Umgebungs­geräusche</span>
+            </button>
+            <button class="mode-btn" data-mode="adaptive" role="tab" aria-selected="false">
+              <span class="btn-icon">✨</span>
+              <span class="btn-title">Adaptives Audio</span>
+              <span class="btn-desc">Mischt ANC dynamisch nach Situation</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- NEU: Interaktiver Vorher/Nachher ANC Vergleichs-Slider -->
+        <div class="anc-wipe-container">
+          <div class="wipe-header">
+            <h3>Wische für den Vorher / Nachher ANC-Vergleich</h3>
+            <p>Ziehe den Regler, um den Unterschied zwischen Straßenlärm und der absoluten Stille der AirPods Pro zu erleben.</p>
+          </div>
+
+          <div class="wipe-stage" id="wipe-stage">
+            <!-- Left Side: No ANC (Noisy) -->
+            <div class="wipe-layer wipe-layer-before">
+              <div class="wipe-content">
+                <span class="wipe-tag tag-before">OHNE GERÄUSCHUNTERDRÜCKUNG</span>
+                <h4>Verkehrs- & Flugzeugdröhnen</h4>
+                <div class="wipe-db-badge before-db">+84 dB Umgebungspegel</div>
+                <div class="noise-wave-graphic">
+                  <div class="noise-bar nb-1"></div>
+                  <div class="noise-bar nb-2"></div>
+                  <div class="noise-bar nb-3"></div>
+                  <div class="noise-bar nb-4"></div>
+                  <div class="noise-bar nb-5"></div>
+                  <div class="noise-bar nb-6"></div>
+                  <div class="noise-bar nb-7"></div>
+                  <div class="noise-bar nb-8"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side: With ANC (Pure Silence) -->
+            <div class="wipe-layer wipe-layer-after" id="wipe-layer-after">
+              <div class="wipe-content">
+                <span class="wipe-tag tag-after">MIT H2 AKTIVER GERÄUSCHUNTERDRÜCKUNG</span>
+                <h4>Reiner, kristallklarer Sound</h4>
+                <div class="wipe-db-badge after-db">-42 dB Rauschunterdrückung</div>
+                <div class="serene-wave-graphic">
+                  <div class="serene-line"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Drag Handle Divider -->
+            <div class="wipe-handle" id="wipe-handle">
+              <div class="handle-line"></div>
+              <div class="handle-pill">
+                <span>◀ ▶</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. INTERAKTIVE TOUCH-STEUERUNG (WISCHEN ZUM LAUTER/LEISER) -->
+    <section class="section-touch" id="touch">
+      <div class="content-container">
+        <div class="touch-split">
+          <div class="touch-copy">
+            <span class="tag-accent">Sensor am Schaft</span>
+            <h2>Wischen genügt.<br>Volle Kontrolle.</h2>
+            <p>Mit der Touch-Steuerung am unteren Schaft passt du die Lautstärke mit einer einfachen Wischbewegung nach oben oder unten an. Ein Druck pausiert, wechselt Tracks oder schaltet den ANC-Modus um.</p>
+            
+            <div class="touch-instructions">
+              <div class="instruct-item">
+                <span class="gesture-icon">↕</span>
+                <div>
+                  <strong>Wischen nach oben / unten</strong>
+                  <span>Lautstärke stufenlos einstellen (mit Audio-Klick-Feedback)</span>
+                </div>
+              </div>
+              <div class="instruct-item">
+                <span class="gesture-icon">●</span>
+                <div>
+                  <strong>1x Drücken</strong>
+                  <span>Wiedergabe, Pause, Anruf annehmen</span>
+                </div>
+              </div>
+              <div class="instruct-item">
+                <span class="gesture-icon">●●</span>
+                <div>
+                  <strong>Halten</strong>
+                  <span>Zwischen ANC und Transparenz wechseln</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Stem Simulator mit echtem AirPod-Bild -->
+          <div class="stem-interactive-box">
+            <div class="stem-real-pod-preview">
+              <img src="assets/single_pod.png" alt="AirPods Pro Schaft mit Sensor" class="real-stem-img">
+              <div class="sensor-pointer-badge">Kapazitiver Touch-Sensor</div>
+            </div>
+
+            <div class="stem-drag-zone" id="stem-drag-zone">
+              <div class="stem-visual">
+                <div class="stem-groove" id="stem-groove">
+                  <div class="stem-thumb" id="stem-thumb">
+                    <span>WISCHEN</span>
+                  </div>
+                </div>
+              </div>
+              <div class="volume-readout">
+                <div class="vol-label">LAUTSTÄRKE</div>
+                <div class="vol-value" id="vol-value">75%</div>
+                <div class="vol-bars" id="vol-bars">
+                  <!-- Generated by JS -->
+                </div>
+                <div class="vol-hint">Ziehe oder wische den Schaft mit der Maus oder dem Finger</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. NEU: INTERAKTIVER MAGSAFE CASE OPEN/CLOSE SIMULATOR -->
+    <section class="section-case-sim" id="case-sim">
+      <div class="content-container">
+        <div class="section-header center">
+          <span class="tag-accent">Haptische Interaktion</span>
+          <h2>Das MagSafe Ladecase.</h2>
+          <p class="section-desc">Klicke auf das Case oder drücke den Button, um es interaktiv auf- und zuzuklappen.</p>
+        </div>
+
+        <div class="case-sim-stage">
+          <div class="case-visual-container" id="case-toggle-box" role="button" tabindex="0" aria-label="MagSafe Case auf- oder zuklappen">
+            <!-- Closed Case Layer -->
+            <img src="assets/closed_case_front.png" alt="MagSafe Case geschlossen" class="case-img case-closed active" id="case-closed-img">
+            <!-- Open Case Layer -->
+            <img src="assets/open_case.png" alt="MagSafe Case geöffnet" class="case-img case-open" id="case-open-img">
+            
+            <!-- Real Status LED -->
+            <div class="case-led-indicator" id="case-led"></div>
+          </div>
+
+          <div class="case-control-panel">
+            <div class="case-status-badge">
+              <span class="status-dot"></span>
+              <span id="case-status-text">Case Geschlossen · 100% Akku</span>
+            </div>
+
+            <button class="case-toggle-btn magnet-btn" id="btn-toggle-case">
+              Case Aufklappen ↗
+            </button>
+
+            <div class="case-feature-pills">
+              <span>✦ U1 Chip Präzisionssuche</span>
+              <span>✦ USB-C & MagSafe Laden</span>
+              <span>✦ Integrierter Suchton-Lautsprecher</span>
+              <span>✦ Schlaufe für Trageband</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PINNED HORIZONTALES WISCH- & SCROLL-KARUSSELL MIT ECHTEN BILDERN -->
+    <section class="horizontal-scroll-section" id="innovations">
+      <div class="horizontal-sticky-wrapper">
+        <div class="horizontal-header">
+          <span class="tag-accent">Meilensteine der Akustik</span>
+          <h2>Wische durch die Innovationen.</h2>
+          <p>Scrolle nach unten, um horizontal durch alle bahnbrechenden Komponenten zu gleiten.</p>
+        </div>
+
+        <div class="horizontal-track" id="horizontal-track">
+          <!-- Card 1: H2 Chip -->
+          <article class="h-card card-h2 tilt-card">
+            <div class="h-card-inner">
+              <span class="card-chip-tag">APPLE SILICON</span>
+              <h3>H2 Chip</h3>
+              <p>Der Dirigent jedes Klangs. Berechnet mit hochentwickelten Audioalgorithmen gleichzeitig 3D-Klang, Akkulaufzeit und Geräuschfilterung.</p>
+              <div class="h-card-img-wrap">
+                <img src="assets/both_pods.png" alt="H2 Chip AirPods" class="h-card-img float-card-img">
+              </div>
+              <div class="h-card-metric">48.000x</div>
+              <div class="h-card-sub">Audio-Anpassungen pro Sekunde</div>
+            </div>
+          </article>
+
+          <!-- Card 2: 3D Audio -->
+          <article class="h-card card-spatial tilt-card">
+            <div class="h-card-inner">
+              <span class="card-chip-tag">IMMERSIV</span>
+              <h3>Personalisiertes 3D Audio</h3>
+              <p>Erstellt ein exaktes Profil deiner Ohren. Dynamisches Head Tracking platziert Soundelemente präzise im 3D-Raum um deinen Kopf.</p>
+              <div class="h-card-img-wrap">
+                <img src="assets/single_pod.png" alt="Personalisiertes 3D Audio" class="h-card-img pulse-card-img">
+              </div>
+              <div class="h-card-metric">360°</div>
+              <div class="h-card-sub">Kino-Surround-Sound überall</div>
+            </div>
+          </article>
+
+          <!-- Card 3: Das neue Ladecase -->
+          <article class="h-card card-case tilt-card">
+            <div class="h-card-inner">
+              <span class="card-chip-tag">MAGSAFE & USB-C</span>
+              <h3>Das neue Ladecase</h3>
+              <p>Ausgestattet mit U1 Chip für Präzisionssuche in der „Wo ist?“ App, integriertem Lautsprecher für Suchtöne und Trageschlaufe.</p>
+              <div class="h-card-img-wrap">
+                <img src="assets/open_case.png" alt="MagSafe Ladecase USB-C" class="h-card-img float-card-img">
+              </div>
+              <div class="h-card-metric">U1 & USB-C</div>
+              <div class="h-card-sub">Zentimetergenaue Ortung</div>
+            </div>
+          </article>
+
+          <!-- Card 4: Batterie -->
+          <article class="h-card card-battery tilt-card">
+            <div class="h-card-inner">
+              <span class="card-chip-tag">POWERHOUSE</span>
+              <h3>30 Stunden Energie</h3>
+              <p>Bis zu 6 Stunden ununterbrochene Wiedergabe mit aktiver Geräuschunterdrückung. Bis zu 30 Stunden Gesamtlaufzeit mit dem Case.</p>
+              <div class="h-card-img-wrap">
+                <img src="assets/battery_case.png" alt="AirPods Pro Akku" class="h-card-img float-card-img">
+              </div>
+              <div class="h-card-metric">30 Std.</div>
+              <div class="h-card-sub">5 Minuten Laden = 1 Stunde Musik</div>
+            </div>
+          </article>
+
+          <!-- Card 5: Ergonomie 4 Größen -->
+          <article class="h-card card-fit tilt-card">
+            <div class="h-card-inner">
+              <span class="card-chip-tag">ERGONOMIE</span>
+              <h3>4 Silikontip-Größen</h3>
+              <p>Mit neuer XS-Größe (XS, S, M, L) aus weichem Silikon für perfekten Halt und ideale akustische Abdichtung bei jedem Ohrtyp.</p>
+              <div class="h-card-img-wrap">
+                <img src="assets/fit_tips.jpg" alt="Silikontip-Größen" class="h-card-img" style="border-radius:12px;">
+              </div>
+              <div class="h-card-metric">XS · S · M · L</div>
+              <div class="h-card-sub">Akustischer Spitzenverschluss</div>
+            </div>
+          </article>
+
+          <!-- Card 6: IP54 Schutz -->
+          <article class="h-card card-ip54 tilt-card">
+            <div class="h-card-inner">
+              <span class="card-chip-tag">WIDERSTANDSFÄHIG</span>
+              <h3>IP54 Zertifiziert</h3>
+              <p>Sowohl die AirPods Pro als auch das MagSafe Ladecase sind staub-, schweiß- und wassergeschützt für anspruchsvollstes Training.</p>
+              <div class="h-card-img-wrap">
+                <img src="assets/single_pod.png" alt="IP54 Schutz" class="h-card-img float-card-img">
+              </div>
+              <div class="h-card-metric">IP54</div>
+              <div class="h-card-sub">AirPods & Case geschützt</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. TECH SPECS & COMPARISON MATRIX (REACT BITS TILT & SPOTLIGHT CARDS) -->
+    <section class="section-specs" id="specs">
+      <div class="content-container">
+        <div class="section-header center">
+          <span class="tag-accent">Im kleinsten Detail</span>
+          <h2>Technische Daten</h2>
+          <p class="section-desc">Jedes Bauteil wurde für kompromisslose akustische Wiedergabetreue optimiert.</p>
+        </div>
+
+        <div class="specs-grid">
+          <div class="spec-card tilt-card" data-tilt>
+            <div class="spotlight-overlay"></div>
+            <h4>Audio-Technologie</h4>
+            <ul>
+              <li>Spezieller Apple High-Excursion Tieftöner</li>
+              <li>Spezieller Verstärker mit hohem Dynamikbereich</li>
+              <li>Belüftungssystem für Druckausgleich</li>
+              <li>Adaptiver EQ zur Frequenzkorrektur in Echtzeit</li>
+            </ul>
+          </div>
+
+          <div class="spec-card tilt-card" data-tilt>
+            <div class="spotlight-overlay"></div>
+            <h4>Sensoren</h4>
+            <ul>
+              <li>Zwei Beamforming-Mikrofone</li>
+              <li>Nach innen gerichtetes Mikrofon</li>
+              <li>Hauterkennungssensor</li>
+              <li>Beschleunigungsmesser mit Bewegungserkennung</li>
+              <li>Kapazitiver Touch-Sensor am Schaft</li>
+            </ul>
+          </div>
+
+          <div class="spec-card tilt-card" data-tilt>
+            <div class="spotlight-overlay"></div>
+            <h4>Chip & Konnektivität</h4>
+            <ul>
+              <li>Apple H2 Kopfhörer-Chip im Ohrhörer</li>
+              <li>Apple U1 Chip im MagSafe Ladecase</li>
+              <li>Bluetooth 5.3 Drahtlostechnologie</li>
+              <li>Automatisches Wechseln zwischen Apple Geräten</li>
+            </ul>
+          </div>
+
+          <div class="spec-card tilt-card" data-tilt>
+            <div class="spotlight-overlay"></div>
+            <h4>Abmessungen & Gewicht</h4>
+            <ul>
+              <li>AirPod (pro Stück): 5,3 g</li>
+              <li>Abmessungen: 30,9 × 21,8 × 24,0 mm</li>
+              <li>MagSafe Case: 50,8 g</li>
+              <li>Ladeanschluss: USB-C, MagSafe, Apple Watch Puck</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. BUY & CALL TO ACTION SECTION MIT ECHTEM PRODUKTFOTO -->
+    <section class="section-buy" id="buy">
+      <div class="content-container buy-container">
+        <div class="buy-card">
+          <div class="buy-img-wrap">
+            <img src="assets/open_case.png" alt="AirPods Pro mit MagSafe Case" class="buy-product-img">
+          </div>
+          <div class="buy-badge">Kostenlose Lieferung & Gravur</div>
+          <h2>AirPods Pro</h2>
+          <p class="buy-sub">2. Generation mit MagSafe Ladecase (USB-C)</p>
+          
+          <div class="price-tag">
+            <span class="price-amount">279,00 €</span>
+            <span class="price-vat">inkl. MwSt.</span>
+          </div>
+
+          <div class="buy-features-list">
+            <span>✓ Kostenlose individuelle Gravur (Emoji, Text, Ziffern)</span>
+            <span>✓ 0 % Finanzierung ab 23,25 € / Monat für 12 Monate</span>
+            <span>✓ Kostenlose Rückgabe innerhalb von 14 Tagen</span>
+          </div>
+
+          <div class="buy-button-group">
+            <button class="buy-btn-primary magnet-btn" id="btn-buy-now">
+              In den Einkaufswagen
+            </button>
+            <a href="https://www.apple.com/at/airpods-pro/" target="_blank" rel="noopener" class="buy-btn-secondary">
+              Auf Apple.com ansehen ↗
+            </a>
+          </div>
+
+          <div class="buy-security-note">
+            Kompatibel mit iPhone, iPad, Mac, Apple Watch und Apple TV.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Apple Standard Dark Footer -->
+  <footer class="apple-footer">
+    <div class="content-container">
+      <div class="footer-disclaimers">
+        <p>1. Im Vergleich zu AirPods Pro (1. Generation). Leistung abhängig von der individuellen Passform.</p>
+        <p>2. Die AirPods Pro (2. Generation) und das MagSafe Ladecase sind nach IEC-Norm 60529 unter IP54 klassifiziert.</p>
+        <p>3. Batterielaufzeit variiert abhängig von Verwendung, Lautstärke und Umgebungseinstellungen.</p>
+      </div>
+      <div class="footer-bottom">
+        <span>Copyright © 2026 Apple Inc. Alle Rechte vorbehalten.</span>
+        <div class="footer-links">
+          <a href="#">Datenschutz</a>
+          <a href="#">Nutzungsbedingungen</a>
+          <a href="#">Verkauf und Rückerstattung</a>
+          <a href="#">Rechtliche Hinweise</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script type="module" src="script.js"></script>
+</body>
+</html>
